@@ -3,7 +3,16 @@ const db = require('../database/db.js');
 // List all products
 
 const select_products = db.prepare(/* sql */ `
-    SELECT id, name, quantity_per_unit, unit_price, units_in_stock, units_on_order FROM products
+    SELECT
+        id,
+        name, 
+        quantity_per_unit, 
+        FORMAT('£%.2f', unit_price), 
+        units_in_stock, 
+        units_on_order,
+        FORMAT('£%.2f', (unit_price * units_in_stock)) AS stock_value
+    FROM
+        products
 `);
 
 const listProducts = () => {
@@ -13,7 +22,9 @@ const listProducts = () => {
 // Search products
 
 const search_products = db.prepare(/* sql */ `
-    SELECT id, name
+    SELECT
+        id, 
+        name
     FROM products
     WHERE name LIKE ?
 `);

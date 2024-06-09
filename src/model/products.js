@@ -6,11 +6,11 @@ const select_products = db.prepare(/* sql */ `
     SELECT
         id,
         name, 
-        quantity_per_unit, 
-        FORMAT('£%.2f', unit_price), 
+        quantity_per_unit,
+        FORMAT('£%.2f', unit_price) AS unit_price, 
         units_in_stock, 
         units_on_order,
-        FORMAT('£%.2f', (unit_price * units_in_stock)) AS stock_value
+        FORMAT('£%.2f', unit_price * units_in_stock) AS stock_value /* How does this work without using INSERT? */
     FROM
         products
 `);
@@ -26,7 +26,7 @@ const search_products = db.prepare(/* sql */ `
         id, 
         name
     FROM products
-    WHERE name LIKE ?
+    WHERE name LIKE ? /* I kept having issues where I was trying to use RETURNING - when is RETURNING needed? */
 `);
 
 const searchProducts = (string) => {

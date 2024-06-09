@@ -22,4 +22,16 @@ const searchProducts = (string) => {
 	return search_products.all('%' + string + '%');
 };
 
-module.exports = { listProducts, searchProducts };
+// Get specific product
+
+const get_product = db.prepare(/* sql */ `
+    SELECT products.id, products.name
+    FROM products
+    WHERE products.id = ?
+`);
+
+const getProduct = (id) => {
+	return get_product.get(id);
+};
+
+module.exports = { listProducts, searchProducts, getProduct };

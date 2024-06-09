@@ -25,8 +25,13 @@ const searchProducts = (string) => {
 // Get specific product
 
 const get_product = db.prepare(/* sql */ `
-    SELECT products.id, products.name
+    SELECT
+        products.id,
+        products.name,
+        categories.name AS category_name,
+        categories.description AS category_description
     FROM products
+    JOIN categories ON products.category_id = categories.id
     WHERE products.id = ?
 `);
 
